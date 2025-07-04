@@ -28,6 +28,9 @@ $routes->group('keranjang', ['filter' => 'auth'], function ($routes) {
     $routes->get('clear', 'TransaksiController::cart_clear');
 });
 
+$routes->post('penjualan/updateStatus/(:any)','TransaksiController::updateStatus/$1', ['filter' => 'auth']);
+$routes->get('penjualan', 'Home::penjualan', ['filter' => 'auth']);
+
 $routes->get('checkout', 'TransaksiController::checkout', ['filter' => 'auth']);
 $routes->post('buy', 'TransaksiController::buy', ['filter' => 'auth']);
 
