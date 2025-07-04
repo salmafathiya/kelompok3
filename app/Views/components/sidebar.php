@@ -33,6 +33,13 @@
                     <span>Transaksi</span>
                 </a>
             </li><!-- End Produk Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link <?php echo (uri_string() == 'penjualan') ? "" : "collapsed" ?>" href="penjualan">
+                    <i class="bi bi-card-list"></i>
+                    <span>Penjualan</span>
+                </a>
+            </li><!-- End Produk Nav -->
         <?php
         }
         ?>
