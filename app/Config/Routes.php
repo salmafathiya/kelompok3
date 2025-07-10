@@ -8,6 +8,10 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Home::index', ['filter' => 'auth']);
 
+$routes->get('laporan/pendapatan', 'LaporanController::pendapatan', ['filter' => 'auth']);
+$routes->get('laporan/pendapatan/pdf', 'LaporanController::pendapatan_pdf', ['filter' => 'auth']);
+$routes->get('laporan/pendapatan/excel', 'LaporanController::pendapatan_excel', ['filter' => 'auth']);
+
 $routes->get('login', 'AuthController::login');
 $routes->post('login', 'AuthController::login');
 $routes->get('logout', 'AuthController::logout');

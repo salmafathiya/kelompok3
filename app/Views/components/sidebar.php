@@ -40,6 +40,13 @@
                     <span>Penjualan</span>
                 </a>
             </li><!-- End Produk Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link <?php echo (uri_string() == 'laporan/pendapatan') ? '' : 'collapsed'; ?>" href="<?= base_url('laporan/pendapatan') ?>">
+                    <i class="bi bi-bar-chart"></i>
+                    <span>Laporan Pendapatan</span>
+                </a>
+            </li><!-- End Laporan Pendapatan Nav -->
         <?php
         }
         ?>
