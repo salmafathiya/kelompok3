@@ -1,77 +1,62 @@
-<?= $this->extend('layout') ?> 
-<?= $this->section('content') ?> 
-Daftar Transaksi 
-<hr> 
-<?= session()->getFlashdata('success') ?> 
-<?= session()->getFlashdata('error') ?> 
-<div class="table-responsive"> 
-    <!-- Table with stripped rows --> 
-    <table class="table datatable"> 
-        <thead> 
-            <tr> 
-                <th scope="col">#</th> 
-                <th scope="col">ID</th> 
-                <th scope="col">UserName</th> 
-                <th scope="col">Total Harga</th> 
-                <th scope="col">Alamat</th> 
-                <th scope="col">Ongkir</th> 
-                <th scope="col">Status</th> 
-                <th scope="col">Bukti Pembayaran</th>
-                <th scope="col">Ubah Status</th> 
-            </tr> 
-        </thead> 
-        <tbody> 
+<?= $this->extend('layout') ?>
+<?= $this->section('content') ?>
+<h4>Laporan Pendapatan</h4>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <form class="d-flex align-items-center gap-2 mb-0" method="get" action="">
+        <label class="mb-0">Periode:</label>
+        <input type="date" name="start" value="<?= esc($start) ?>" class="form-control form-control-sm" style="width:150px;">
+        <span class="mx-1">s/d</span>
+        <input type="date" name="end" value="<?= esc($end) ?>" class="form-control form-control-sm" style="width:150px;">
+        <button type="submit" class="btn btn-primary btn-sm ms-2">Terapkan</button>
+    </form>
+    <div>
+        <a href="<?= base_url('laporan/pdf?start=' . esc($start) . '&end=' . esc($end)) ?>" class="btn btn-danger btn-sm me-2" target="_blank">Download PDF</a>
+        <a href="<?= base_url('laporan/excel?start=' . esc($start) . '&end=' . esc($end)) ?>" class="btn btn-success btn-sm">Export Excel</a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID Transaksi</th>
+                <th>Tanggal</th>
+                <th>User</th>
+                <th>Total Harga</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
             <?php 
-            if (!empty($transactions)) : 
-                foreach ($transactions as $index => $item) : 
-            ?> 
-                    <tr> 
-                        <th scope="row"><?php echo $index + 1 ?></th> 
-                        <td><?php echo $item['id'] ?></td> 
-                        <td><?php echo $item['username'] ?></td> 
-                        <td><?php echo number_to_currency($item['total_harga'], 
-'IDR') ?></td> 
-                        <td><?php echo $item['alamat'] ?></td> 
-                        <td><?php echo $item['ongkir'] ?></td> 
-                        <td><?php echo [ 
-                        0 => 'Menunggu Pembayaran', 
-                        1 => 'Sudah Dibayar', 
-                        2 => 'Sedang Dikirim', 
-                        3 => 'Sudah Selesai', 
-                        4 => 'Dibatalkan' 
-                    ][$item['status']] ?? 'Status Tidak Diketahui' ?></td> 
-                        <td>
-                            <?php if (!empty($item['bukti_pembayaran'])): ?>
-                                <img src="<?= base_url('bukti/' . $item['bukti_pembayaran']) ?>" alt="Bukti Pembayaran" style="max-width:100px;max-height:100px;display:block;">
-                            <?php else: ?>
-                                <span class="text-muted">Belum ada bukti</span>
-                            <?php endif; ?>
-                        </td>
-                    <td>
-            <?php if (session()->get('role') === 'admin') : ?>
-                <form class="d-flex align-items-center gap-2 mb-0" action="<?= base_url('penjualan/updateStatus/' . $item['id']) ?>" method="post">
-                    <?= csrf_field() ?>
-                    <select name="status" class="form-select" style="min-width:140px;max-width:180px;">
-                        <option value="0" <?= $item['status'] == '0' ? 'selected' : '' ?>>Pending</option>
-                        <option value="1" <?= $item['status'] == '1' ? 'selected' : '' ?>>Paid</option>
-                        <option value="2" <?= $item['status'] == '2' ? 'selected' : '' ?>>Shipped</option>
-                        <option value="3" <?= $item['status'] == '3' ? 'selected' : '' ?>>Completed</option>
-                        <option value="4" <?= $item['status'] == '4' ? 'selected' : '' ?>>Cancelled</option>
-                    </select>
-                    <button type="submit" class="btn btn-success btn-sm px-2 py-1" title="Update Status">
-                        <i class="bi bi-arrow-repeat"></i>
-                    </button>
-                </form>
-            <?php else : ?>
-                <span class="text-muted">-</span>
-            <?php endif; ?>
-        </td>
-    </tr> 
-    <?php endforeach;   
-            endif; 
-            ?> 
-        </tbody> 
-    </table> 
-    <!-- End Table with stripped rows --> 
-</div> 
+            $total = 0;
+            if (!empty($pendapatan)): $no=1; foreach ($pendapatan as $row): 
+                $total += $row['total_harga'];
+            ?>
+            <tr>
+                <td><?= $no++ ?></td>
+                <td><?= $row['id'] ?></td>
+                <td><?= $row['created_at'] ?></td>
+                <td><?= $row['username'] ?></td>
+                <td><?= number_to_currency($row['total_harga'], 'IDR') ?></td>
+                <td><?php
+                    $statusList = [
+                        0 => 'Menunggu Pembayaran',
+                        1 => 'Sudah Dibayar',
+                        2 => 'Sedang Dikirim',
+                        3 => 'Sudah Selesai',
+                        4 => 'Dibatalkan'
+                    ];
+                    echo $statusList[$row['status']] ?? 'Tidak Diketahui';
+                ?></td>
+            </tr>
+            <?php endforeach; endif; ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="text-end">Total Harga</th>
+                <th colspan="2"><?= number_to_currency($total, 'IDR') ?></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
 <?= $this->endSection() ?>
