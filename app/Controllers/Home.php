@@ -59,7 +59,7 @@ class Home extends BaseController
     $username = session()->get('username');
     $data['username'] = $username;
 
-    $buy = $this->transaction->findAll();
+    $buy = $this->transaction->where('username', $username)->findAll();
     $data['buy'] = $buy;
 
     $product = [];
