@@ -47,6 +47,12 @@ $routes->get('transaksi', 'Home::transaksi', ['filter' => 'auth']);
 $routes->get('/transaksi', 'TransaksiController::index');
 $routes->get('/transaksi/download', 'TransaksiController::downloadTransaksi');
 
+$routes->post('profile/upload_bukti/(:num)', 'Home::uploadBukti/$1', ['filter' => 'auth']);
+
+$routes->get('laporan', 'LaporanController::index', ['filter' => 'auth']);
+$routes->get('laporan/pdf', 'LaporanController::pdf', ['filter' => 'auth']);
+$routes->get('laporan/excel', 'LaporanController::excel', ['filter' => 'auth']);
+
 $routes->get('faq', 'Home::faq', ['filter' => 'auth']);
 $routes->get('contact', 'Home::contact', ['filter' => 'auth']);
 
