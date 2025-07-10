@@ -57,13 +57,10 @@ class Home extends BaseController
     public function transaksi()
 {
     $username = session()->get('username');
-    $role = session()->get('role');
+    $data['username'] = $username;
 
-    if ($role === 'admin') {
-        $buy = $this->transaction->findAll();
-    } else {
-        $buy = $this->transaction->where('username', $username)->findAll();
-    }
+    $buy = $this->transaction->findAll();
+    $data['buy'] = $buy;
 
     $product = [];
 
@@ -76,8 +73,7 @@ class Home extends BaseController
             }
         }
     }
-    
-    $data['buy'] = $buy; //
+
     $data['product'] = $product;
     $data['title'] = 'Daftar Transaksi';
     $data['tanggal_sekarang'] = date('l, d-m-Y H:i:s'); // Format: Friday, 20-06-2025 10:57:30

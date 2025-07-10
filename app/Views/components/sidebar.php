@@ -17,6 +17,13 @@
             </a>
         </li><!-- End Keranjang Nav -->
 
+        <li class="nav-item">
+            <a class="nav-link <?php echo (uri_string() == 'transaksi') ? "" : "collapsed" ?>" href="transaksi">
+                <i class="bi bi-receipt"></i>
+                <span>Transaksi</span>
+            </a>
+        </li><!-- End Produk Nav -->
+
         <?php
         if (session()->get('role') == 'admin') {
         ?>
@@ -44,13 +51,6 @@
         <?php
         }
         ?>
-
-        <li class="nav-item">
-            <a class="nav-link <?php echo (uri_string() == 'transaksi') ? "" : "collapsed" ?>" href="transaksi">
-                <i class="bi bi-receipt"></i>
-                <span>Transaksi</span>
-            </a>
-        </li><!-- End Produk Nav -->
 
         <li class="nav-item">
             <a class="nav-link <?php echo (uri_string() == 'profile') ? "" : "collapsed" ?>" href="profile">
