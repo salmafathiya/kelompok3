@@ -56,18 +56,17 @@ class Home extends BaseController
 
     public function transaksi()
 {
-    // Get all transactions from database
-    $transactions = $this->transaction->findAll();
-    $data['transactions'] = $transactions;
+    $username = session()->get('username');
+    $data['username'] = $username;
+
+    $buy = $this->transaction->findAll();
+    $data['buy'] = $buy;
 
     $product = [];
 
-    if (!empty($transactions)) {
-        foreach ($transactions as $item) {
-            $detail = $this->transaction_detail->select('transaction_detail.*, product.nama, product.harga, product.foto')
-                ->join('product', 'transaction_detail.product_id=product.id')
-                ->where('transaction_id', $item['id'])
-                ->findAll();
+    if (!empty($buy)) {
+        foreach ($buy as $item) {
+            $detail = $this->transaction_detail->select('transaction_detail.*, product.nama, product.harga, product.foto')->join('product', 'transaction_detail.product_id=product.id')->where('transaction_id', $item['id'])->findAll();
 
             if (!empty($detail)) {
                 $product[$item['id']] = $detail;
@@ -88,5 +87,27 @@ class Home extends BaseController
         $data['transactions'] = $transactions;
 
         return view('v_penjualan', $data); // kirim data ke view
+    }
+
+    public function uploadBukti($id)
+    {
+        $transaction = $this->transaction->find($id);
+        if (!$transaction || $transaction['username'] !== session()->get('username')) {
+            return redirect()->back()->with('error', 'Transaksi tidak valid!');
+        }
+
+        $file = $this->request->getFile('bukti_pembayaran');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $newName = $id . '_' . time() . '.' . $file->getExtension();
+            $uploadPath = FCPATH . 'bukti/'; // FCPATH = public/
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+            $file->move($uploadPath, $newName);
+            $this->transaction->update($id, ['bukti_pembayaran' => $newName]);
+            return redirect()->back()->with('success', 'Bukti pembayaran berhasil diupload!');
+        } else {
+            return redirect()->back()->with('error', 'Upload gagal! Pastikan file gambar valid.');
+        }
     }
 }
