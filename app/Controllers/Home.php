@@ -96,6 +96,9 @@ class Home extends BaseController
             return redirect()->back()->with('error', 'Transaksi tidak valid!');
         }
 
+
+
+
         $file = $this->request->getFile('bukti_pembayaran');
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $newName = $id . '_' . time() . '.' . $file->getExtension();

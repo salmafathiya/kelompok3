@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\TransactionModel;
+use Dompdf\Dompdf;
 
 class LaporanController extends BaseController
 {
@@ -57,11 +58,11 @@ class LaporanController extends BaseController
         $html .= '</tbody>';
         $html .= '<tfoot><tr><th colspan="4" style="text-align:right;">Total Harga</th><th colspan="2">' . number_to_currency($total, 'IDR') . '</th></tr></tfoot>';
         $html .= '</table>';
-        $dompdf = new \Dompdf\Dompdf();
+        $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $dompdf->stream('laporan_pendapatan.pdf', ['Attachment' => 0]);
+        $dompdf->stream('Laporan Pendapatan-' . date('Ymd-His') . '.pdf');
         exit();
     }
 

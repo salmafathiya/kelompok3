@@ -10,7 +10,7 @@
         <button type="submit" class="btn btn-primary btn-sm ms-2">Terapkan</button>
     </form>
     <div>
-        <a href="<?= base_url('laporan/pdf?start=' . esc($start) . '&end=' . esc($end)) ?>" class="btn btn-danger btn-sm me-2" target="_blank">Download PDF</a>
+        <a href="<?= base_url('laporan/pdf') ?>" class="btn btn-danger btn-sm me-2" target="_blank">Download PDF</a>
         <a href="<?= base_url('laporan/excel?start=' . esc($start) . '&end=' . esc($end)) ?>" class="btn btn-success btn-sm">Export Excel</a>
     </div>
 </div>

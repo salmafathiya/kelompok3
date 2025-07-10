@@ -17,6 +17,7 @@ Daftar Transaksi
 <th scope="col">Alamat</th>
 <th scope="col">Ongkir</th>
 <th scope="col">Status</th>
+<th scope="col">Bukti Pembayaran</th>
 <th scope="col">Ubah Status</th>
 </tr>
 </thead>
@@ -40,13 +41,13 @@ foreach ($transactions as $index => $item) :
     4 => 'Dibatalkan'
     ][$item['status']] ?? 'Status Tidak Diketahui' ?></td>
     <td>
-    <td>
         <?php if (!empty($item['bukti_pembayaran'])): ?>
             <img src="<?= base_url('bukti/' . $item['bukti_pembayaran']) ?>" alt="Bukti Pembayaran" style="max-width:100px;max-height:100px;display:block;">
         <?php else: ?>
             <span class="text-muted">Belum ada bukti</span>
         <?php endif; ?>
     </td>
+    <td>
 
     <form action="<?= base_url('penjualan/updateStatus/' . $item['id'])?>" method="post">
     <?= csrf_field() ?>

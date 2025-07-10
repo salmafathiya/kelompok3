@@ -68,7 +68,7 @@
                                     <h5 class="modal-title" id="uploadBuktiLabel-<?= $item['id'] ?>">Upload Bukti Pembayaran</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                   </div>
-                                  <form action="<?= base_url('profile/upload_bukti/' . $item['id']) ?>" method="post" enctype="multipart/form-data">
+                                  <form action="<?= base_url('transaksi/upload_bukti/' . $item['id']) ?>" method="post" enctype="multipart/form-data">
                                     <?= csrf_field() ?>
                                     <div class="modal-body">
                                       <div class="mb-3">
